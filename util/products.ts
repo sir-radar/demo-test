@@ -1,10 +1,10 @@
 export const products = [
   {
     id: 1,
-    name: 'Manual Winding Tourbillon Alain Prost Carbon',
-    price: 1727500,
-    brand: ' Richard Mille ',
-    imageURL: '/images/products/alain.png',
+    name: 'Royal Oak Frosted Gold Double Balance...',
+    price: 890520,
+    brand: 'Audemars Piguet',
+    imageURL: '/images/products/openworked.png',
   },
   {
     id: 2,
@@ -24,7 +24,7 @@ export const products = [
     id: 4,
     name: '765LT Spider',
     price: 611843,
-    brand: ' McLaren  ',
+    brand: 'McLaren',
     imageURL: '/images/products/spider_hd.png',
   },
 ];
