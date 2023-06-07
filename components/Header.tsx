@@ -1,11 +1,11 @@
-import Image from 'next/image';
-import Logo from '../assets/images/logo.svg';
-import Unboxing from '../assets/images/unboxing.svg';
-import Battles from '../assets/images/battles.svg';
-import Deals from '../assets/images/deals.svg';
-import Affiliates from '../assets/images/affiliates.svg';
-import FreeDrop from '../assets/images/freeDrop.svg';
 import Link from 'next/link';
+import Image from 'next/image';
+import Logo from '../assets/images/icons/logo.svg';
+import Unboxing from '../assets/images/icons/unboxing.svg';
+import Battles from '../assets/images/icons/battles.svg';
+import Deals from '../assets/images/icons/deals.svg';
+import Affiliates from '../assets/images/icons/affiliates.svg';
+import FreeDrop from '../assets/images/icons/freeDrop.svg';
 
 const navItems = [
   {
@@ -37,7 +37,7 @@ const navItems = [
 
 export default function Header() {
   return (
-    <nav className="flex py-2 px-3.5 bg-white">
+    <nav className="flex py-2 px-3.5 bg-white fixed w-full z-10">
       <Link href="/" className="flex items-center justify-center">
         <svg className="w-[131px] mx-4 my-0" viewBox="0 -2 50 9">
           <Logo />
