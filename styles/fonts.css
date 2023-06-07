@@ -1,10 +1,10 @@
 @font-face {
   font-family: StagSansRegular;
-  src: url('../assets/fonts/StagSansRegular.ttf');
+  src: url('/fonts/StagSansRegular.ttf');
   font-weight: 400;
 }
 @font-face {
   font-family: StagSans;
-  src: url('../assets/fonts/StagSans-SemiBold.ttf');
+  src: url('/fonts/StagSans-SemiBold.ttf');
   font-weight: bold;
 }

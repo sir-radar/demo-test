@@ -1,11 +1,10 @@
 import Link from 'next/link';
-import Image from 'next/image';
-import Logo from '../assets/images/icons/logo.svg';
-import Unboxing from '../assets/images/icons/unboxing.svg';
-import Battles from '../assets/images/icons/battles.svg';
-import Deals from '../assets/images/icons/deals.svg';
-import Affiliates from '../assets/images/icons/affiliates.svg';
-import FreeDrop from '../assets/images/icons/freeDrop.svg';
+import Logo from './icons/logo.svg';
+import Unboxing from './icons/unboxing.svg';
+import Battles from './icons/battles.svg';
+import Deals from './icons/deals.svg';
+import Affiliates from './icons/affiliates.svg';
+import FreeDrop from './icons/freeDrop.svg';
 
 const navItems = [
   {
