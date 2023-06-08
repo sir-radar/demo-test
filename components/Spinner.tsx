@@ -97,8 +97,8 @@ export default function Spinner({ product }: SpinnerInterface) {
   const spin = () => {
     const rrr =
       parseInt(rotateToVal(targetRef?.current?.style.transform!)) || 0;
-    console.log({ rrr });
-    console.log(chance);
+    // console.log({ rrr });
+    // console.log(chance);
     const pss = (((100 - chance) / 2) * 360) / 100;
     const dss = ((100 - (100 - chance) / 2) * 360) / 100;
     let winningRange_ = {
@@ -160,8 +160,8 @@ export default function Spinner({ product }: SpinnerInterface) {
         rotateToVal(spinIndicatorRef?.current?.style.transform!)
       );
       const rotD = Math.abs(rot) % 360;
-      console.log(rotD);
-      console.log(winningRange_);
+      // console.log(rotD);
+      // console.log(winningRange_);
       if (winningRange_.start < winningRange_.end) {
         if (rotD >= winningRange_.start && rotD <= winningRange_.end) {
           if (resultRef.current) {
