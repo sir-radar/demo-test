@@ -28,18 +28,16 @@ body {
   height: 98%;
   border-radius: 50%;
   position: absolute;
-  /* background: radial-gradient(closest-side, white 90%, transparent 80% 100%),
-    conic-gradient(#5dbd87 80%, #fff 0); */
   padding: 14px;
   box-sizing: border-box;
-  background-image: linear-gradient(to top, #5dbd87 80%, transparent 0%);
+  background-image: conic-gradient(from 36deg, #5dbd87 80%, #fff 0);
   background-repeat: no-repeat;
   animation: waterFill 2s linear;
 }
 
 @keyframes waterFill {
   0% {
-    background-size: 200% 500%;
+    background-size: 100% 300%;
   }
   100% {
     background-size: 100% 100%;
