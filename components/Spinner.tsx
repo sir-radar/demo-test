@@ -12,7 +12,6 @@ export default function Spinner({ product }: SpinnerInterface) {
   const minChance = 0.01;
   const maxChance = 80;
   const [chance, setChance] = useState<number>(0);
-  const [isChanceChanged, setIsChanceChanged] = useState<boolean>(false);
   const [chancePrice, setChancePrice] = useState<number>(0.0);
   const R2D = 180 / Math.PI;
   const [active, setActive] = useState<boolean>(false);
@@ -36,12 +35,10 @@ export default function Spinner({ product }: SpinnerInterface) {
     const value = parseInt(e.currentTarget.value);
     setChancePrice(value);
     setChance(parseFloat(((value * 100) / product?.price!).toFixed(2)));
-    setIsChanceChanged(true);
   };
 
   const handleChanceUpdate = (value: number) => {
     setChance(value);
-    setIsChanceChanged(true);
     setChancePrice(product?.price ? (product?.price * value) / 100 : 0.0);
   };
 
@@ -100,7 +97,6 @@ export default function Spinner({ product }: SpinnerInterface) {
     }
 
     if (spinnerCoverRef.current) {
-      setIsChanceChanged(false);
       spinnerCoverRef.current.style.display = 'none';
     }
   };
@@ -111,8 +107,9 @@ export default function Spinner({ product }: SpinnerInterface) {
 
   const getStartingAngle = (): number => {
     // Get the current rotation angle of the target div
-    const targetCurrentAngle =
-      parseInt(rotateToVal(progressRef?.current?.style.transform!)) || 0;
+    const targetCurrentAngle = parseInt(
+      rotateToVal(progressRef?.current?.style.transform || '0')
+    );
     // Get winning starting point from the current value of chance
     const winningStartPoint = (((100 - chance) / 2) * 360) / 100;
 
@@ -127,8 +124,9 @@ export default function Spinner({ product }: SpinnerInterface) {
   };
 
   const spin = () => {
-    const rrr =
-      parseInt(rotateToVal(progressRef?.current?.style.transform!)) || 0;
+    const rrr = parseInt(
+      rotateToVal(progressRef?.current?.style.transform || '0')
+    );
     const pss = (((100 - chance) / 2) * 360) / 100;
     const dss = ((100 - (100 - chance) / 2) * 360) / 100;
     let winningRange_ = {
@@ -166,9 +164,6 @@ export default function Spinner({ product }: SpinnerInterface) {
       spinIndicatorRef.current.style.transform = `rotate(${newVal + x}deg)`;
     }
     setTimeout(() => {
-      const spinnerCurrentAngle = parseInt(
-        rotateToVal(spinIndicatorRef?.current?.style.transform!)
-      );
       if (spinnerCoverRef.current) {
         spinnerCoverRef.current.style.display = 'none';
       }
