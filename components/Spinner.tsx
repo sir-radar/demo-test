@@ -1,4 +1,11 @@
-import React, { ChangeEvent, use, useEffect, useRef, useState } from 'react';
+import React, {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import Image from 'next/image';
 import { ProductInterface } from '@/util/products';
 import { USDollar } from '@/util/currencyFormatter';
@@ -105,23 +112,10 @@ export default function Spinner({ product }: SpinnerInterface) {
     return Math.abs(angle) % 360;
   };
 
-  const getStartingAngle = (): number => {
-    // Get the current rotation angle of the target div
-    const targetCurrentAngle = parseInt(
-      rotateToVal(progressRef?.current?.style.transform || '0')
-    );
-    // Get winning starting point from the current value of chance
+  const getStartingAngle = useMemo(() => {
     const winningStartPoint = (((100 - chance) / 2) * 360) / 100;
-
-    const targetAngleWithin360 = angleTo360(targetCurrentAngle);
-
-    // Absolute winning range starting point
-    const winningStartingPoint =
-      Math.abs(winningStartPoint + targetAngleWithin360) > 360
-        ? Math.abs(winningStartPoint + targetAngleWithin360) % 360
-        : Math.abs(winningStartPoint + targetAngleWithin360);
-    return winningStartingPoint;
-  };
+    return winningStartPoint;
+  }, [chance]);
 
   const spin = () => {
     const rrr = parseInt(
@@ -216,7 +210,6 @@ export default function Spinner({ product }: SpinnerInterface) {
         //   'rotate(' + -(angle + rotation) + 'deg)';
       }
     }
-    setTimeout(() => {}, 10000);
   };
 
   const stop = () => {
@@ -264,7 +257,7 @@ export default function Spinner({ product }: SpinnerInterface) {
             ref={progressRef}
             className="progress"
             style={{
-              backgroundImage: ` conic-gradient(from ${getStartingAngle()}deg, #5dbd87 ${chance}%, #fff 0)`,
+              backgroundImage: ` conic-gradient(from ${getStartingAngle}deg, #5dbd87 ${chance}%, #fff 0)`,
             }}
           ></div>
         )}
