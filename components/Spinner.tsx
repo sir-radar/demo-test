@@ -53,52 +53,82 @@ export default function Spinner({ product }: SpinnerInterface) {
     setTimeout(() => spin(), 1000);
   };
 
+  // Takes an element rotation value and return only the figure in it.
   const rotateToVal = (rotate: string) => {
     return rotate.replace('rotate(', '').replace('deg)', '');
   };
 
-  // const checkHandlePosition = (handleRotate: any) => {
-  //   const targetRotation = rotateToVal(
-  //     targetRef?.current?.style.transform || '0'
-  //   ); //Get parent div rotation
+  const getResults = (winningRange_: any) => {
+    // Get spinner current angle
+    const spinnerCurrentAngle = parseInt(
+      rotateToVal(spinIndicatorRef?.current?.style.transform!)
+    );
 
-  //   const successBoundaryStart = 0 + parseInt(targetRotation); //Beginning of the bar in original position.
-  //   const successBoundaryEnd = (chance / 100) * 360 + parseInt(targetRotation); //progressPercentage of 360. This is where the bar ends + any possible angle rotation on the parent div.
+    // Get spinner current angle within 360 incase the value is bigger than 360 and remove negative sign incase it is a negative number
+    const spinnerAngle = Math.abs(spinnerCurrentAngle) % 360;
 
-  //   const rP = ((handleRotate / 360) % 1).toFixed(2);
-  //   const rotatePercentage = parseInt(rP.replace('0.', ''));
+    if (winningRange_.start < winningRange_.end) {
+      if (
+        spinnerAngle >= winningRange_.start &&
+        spinnerAngle <= winningRange_.end
+      ) {
+        if (resultRef.current) {
+          resultRef.current.style.color = 'green';
+          resultRef.current.innerHTML = 'Success!';
+        }
+      } else {
+        if (resultRef.current) {
+          resultRef.current.style.color = 'red';
+          resultRef.current.innerHTML = 'Please try again...';
+        }
+      }
+    } else {
+      if (
+        spinnerAngle > winningRange_.end &&
+        spinnerAngle < winningRange_.start
+      ) {
+        if (resultRef.current) {
+          resultRef.current.style.color = 'red';
+          resultRef.current.innerHTML = 'Please try again...';
+        }
+      } else {
+        if (resultRef.current) {
+          resultRef.current.style.color = 'green';
+          resultRef.current.innerHTML = 'Success!';
+        }
+      }
+    }
 
-  //   //Formula (360 * percentage) / 100 to get the handle rotation value relative to the parent spinner
-  //   const relativeRotationValue = (360 * rotatePercentage) / 100; //This is the degree location of the handle.
-  //   if (
-  //     relativeRotationValue >= successBoundaryStart &&
-  //     relativeRotationValue <= successBoundaryEnd
-  //   ) {
-  //     console.log('success');
-  //   } else {
-  //     console.log('try again');
-  //   }
-  //   if (spinnerCoverRef.current) {
-  //     spinnerCoverRef.current.style.display = 'none';
-  //   }
-  // };
+    if (spinnerCoverRef.current) {
+      setIsChanceChanged(false);
+      spinnerCoverRef.current.style.display = 'none';
+    }
+  };
 
-  const getStartingAngle = () => {
-    const rrr =
-      parseInt(rotateToVal(targetRef?.current?.style.transform!)) || 0;
-    const pss = (((100 - chance) / 2) * 360) / 100;
-    const an =
-      Math.abs(pss + (Math.abs(rrr) % 360)) > 360
-        ? Math.abs(pss + (Math.abs(rrr) % 360)) % 360
-        : Math.abs(pss + (Math.abs(rrr) % 360));
-    return an;
+  const angleTo360 = (angle: number): number => {
+    return Math.abs(angle) % 360;
+  };
+
+  const getStartingAngle = (): number => {
+    // Get the current rotation angle of the target div
+    const targetCurrentAngle =
+      parseInt(rotateToVal(progressRef?.current?.style.transform!)) || 0;
+    // Get winning starting point from the current value of chance
+    const winningStartPoint = (((100 - chance) / 2) * 360) / 100;
+
+    const targetAngleWithin360 = angleTo360(targetCurrentAngle);
+
+    // Absolute winning range starting point
+    const winningStartingPoint =
+      Math.abs(winningStartPoint + targetAngleWithin360) > 360
+        ? Math.abs(winningStartPoint + targetAngleWithin360) % 360
+        : Math.abs(winningStartPoint + targetAngleWithin360);
+    return winningStartingPoint;
   };
 
   const spin = () => {
     const rrr =
-      parseInt(rotateToVal(targetRef?.current?.style.transform!)) || 0;
-    // console.log({ rrr });
-    // console.log(chance);
+      parseInt(rotateToVal(progressRef?.current?.style.transform!)) || 0;
     const pss = (((100 - chance) / 2) * 360) / 100;
     const dss = ((100 - (100 - chance) / 2) * 360) / 100;
     let winningRange_ = {
@@ -117,31 +147,11 @@ export default function Spinner({ product }: SpinnerInterface) {
             : (dss - (Math.abs(rrr) % 360)) % 360,
       };
     } else {
-      if (isChanceChanged) {
-        winningRange_ = {
-          start:
-            Math.abs(pss - (Math.abs(rrr) % 360)) > 360 ||
-            Math.abs(pss - (Math.abs(rrr) % 360)) < 360
-              ? Math.abs(pss - (Math.abs(rrr) % 360)) % 360
-              : Math.abs(pss - (Math.abs(rrr) % 360)),
-          end:
-            Math.abs(dss - (Math.abs(rrr) % 360)) > 360 ||
-            Math.abs(dss - (Math.abs(rrr) % 360)) < 360
-              ? Math.abs(dss - (Math.abs(rrr) % 360)) % 360
-              : Math.abs(dss - (Math.abs(rrr) % 360)),
-        };
-      } else {
-        winningRange_ = {
-          start:
-            Math.abs(pss + (Math.abs(rrr) % 360)) > 360
-              ? Math.abs(pss + (Math.abs(rrr) % 360)) % 360
-              : Math.abs(pss + (Math.abs(rrr) % 360)),
-          end:
-            Math.abs(dss + (Math.abs(rrr) % 360)) > 360
-              ? Math.abs(dss + (Math.abs(rrr) % 360)) % 360
-              : Math.abs(dss + (Math.abs(rrr) % 360)),
-        };
-      }
+      winningRange_ = {
+        start: (rrr + pss) % 360,
+
+        end: (rrr + dss) % 360,
+      };
     }
 
     if (spinnerCoverRef.current) {
@@ -156,45 +166,13 @@ export default function Spinner({ product }: SpinnerInterface) {
       spinIndicatorRef.current.style.transform = `rotate(${newVal + x}deg)`;
     }
     setTimeout(() => {
-      const rot = parseInt(
+      const spinnerCurrentAngle = parseInt(
         rotateToVal(spinIndicatorRef?.current?.style.transform!)
       );
-      const rotD = Math.abs(rot) % 360;
-      // console.log(rotD);
-      // console.log(winningRange_);
-      if (winningRange_.start < winningRange_.end) {
-        if (rotD >= winningRange_.start && rotD <= winningRange_.end) {
-          if (resultRef.current) {
-            resultRef.current.style.color = 'green';
-            resultRef.current.innerHTML = 'Success!';
-          }
-        } else {
-          if (resultRef.current) {
-            resultRef.current.style.color = 'red';
-            resultRef.current.innerHTML = 'Please try again';
-          }
-          // console.log('TRY AGAIN', '1st');
-        }
-      } else {
-        if (rotD > winningRange_.end && rotD < winningRange_.start) {
-          if (resultRef.current) {
-            resultRef.current.style.color = 'red';
-            resultRef.current.innerHTML = 'Please try again...';
-          }
-          // console.log('TRY AGAIN', '2nd');
-        } else {
-          if (resultRef.current) {
-            resultRef.current.style.color = 'green';
-            resultRef.current.innerHTML = 'Success!';
-          }
-          // console.log('WIN', '2nd');
-        }
-      }
       if (spinnerCoverRef.current) {
-        setIsChanceChanged(false);
         spinnerCoverRef.current.style.display = 'none';
       }
-      // checkHandlePosition(parseInt(rotateToVal(`rotate(${newVal + x}deg)`)));
+      getResults(winningRange_);
     }, 5000);
   };
 
@@ -233,14 +211,14 @@ export default function Spinner({ product }: SpinnerInterface) {
         progressRef.current
       ) {
         // Simulates rotation
-        targetRef.current.style.transform =
-          'rotate(' + (angle + rotation) + 'deg)';
+        // targetRef.current.style.transform =
+        //   'rotate(' + (angle + rotation) + 'deg)';
         // Helps to rotate the green area as backgroundImage value makes rotation fail sometimes
         progressRef.current.style.transform =
           'rotate(' + (angle + rotation) + 'deg)';
         // Prevents arrow from rotating with the green area
-        innerContentsRef.current.style.transform =
-          'rotate(' + -(angle + rotation) + 'deg)';
+        // innerContentsRef.current.style.transform =
+        //   'rotate(' + -(angle + rotation) + 'deg)';
       }
     }
     setTimeout(() => {}, 10000);
